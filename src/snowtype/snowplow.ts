@@ -89,6 +89,22 @@ export type BetType = "win" | "place";
  */
 export type HorseRaceScreen = {
     /**
+     * Distance of the race in meters
+     */
+    race_distance?: number | null;
+    /**
+     * Location of the race
+     */
+    race_location?: string;
+    /**
+     * Name of the race
+     */
+    race_name?: string;
+    /**
+     * Start time of the race in ISO 8601 format
+     */
+    race_start_time?: Date;
+    /**
      * The screen or view the user is currently on within the horse race experience.
      */
     screen_name?: ScreenName;
@@ -100,6 +116,37 @@ export type HorseRaceScreen = {
  */
 export type ScreenName = "VIEWING_RACES" | "PLACING_BET" | "BET_CONFIRMED" | "LOGIN";
 
+/**
+ * Schema for a loginSteps event
+ */
+export type LoginSteps = {
+    /**
+     * The action taken during the login process
+     */
+    action?: null | string;
+}
+
+/**
+ * Creates a Snowplow Event Specification entity.
+ */
+export function createEventSpecification(eventSpecification: EventSpecification){
+    return {
+        schema:
+            'iglu:com.snowplowanalytics.snowplow/event_specification/jsonschema/1-0-3',
+        data: eventSpecification,
+    }
+}
+
+/**
+ * Automatically attached context for event specifications
+ */
+interface EventSpecification {
+    id: string;
+    name: string;
+    data_product_id: string;
+    data_product_name: string;
+    data_product_domain: string;
+}
 
 type ContextsOrTimestamp<T = any> = Omit<CommonEventProperties<T>, 'context'> & { context?: SelfDescribingJson<T>[] | null | undefined }
 /**
@@ -163,7 +210,7 @@ export function createHorseRaceBet(horseRaceBet: HorseRaceBet){
 export function trackHorseRaceScreen<T extends {} = any>(horseRaceScreen: HorseRaceScreen & ContextsOrTimestamp<T>, trackers?: string[]){
     const { context, timestamp, ...data } = horseRaceScreen;
     const event: SelfDescribingJson = {
-        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-2-0',
         data
     };
 
@@ -179,10 +226,61 @@ export function trackHorseRaceScreen<T extends {} = any>(horseRaceScreen: HorseR
  */
 export function createHorseRaceScreen(horseRaceScreen: HorseRaceScreen){
     return {
-        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-1-0',
+        schema: 'iglu:com.snplow.sales.aws/horse_race_screen/jsonschema/1-2-0',
         data: horseRaceScreen
     }
 }
+/**
+ * Track a Snowplow event for LoginSteps.
+ * Schema for a loginSteps event
+ */
+export function trackLoginSteps<T extends {} = any>(loginSteps: LoginSteps & ContextsOrTimestamp<T>, trackers?: string[]){
+    const { context, timestamp, ...data } = loginSteps;
+    const event: SelfDescribingJson = {
+        schema: 'iglu:com.betway/loginSteps/jsonschema/1-0-0',
+        data
+    };
 
+    trackSelfDescribingEvent({
+        event,
+        context,
+        timestamp,
+    }, trackers);
+}
+
+/**
+ * Creates a Snowplow LoginSteps entity.
+ */
+export function createLoginSteps(loginSteps: LoginSteps){
+    return {
+        schema: 'iglu:com.betway/loginSteps/jsonschema/1-0-0',
+        data: loginSteps
+    }
+}
+
+/**
+ * Tracks a Login event specification.
+ * ID: 927f59fa-403f-4d3c-84f7-d7c5d563e962
+ */
+export function trackLoginSpec(login: LoginSteps & ContextsOrTimestamp, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
+        id: '927f59fa-403f-4d3c-84f7-d7c5d563e962',
+        name: 'Login',
+        data_product_id: 'abecc3d9-dab3-4500-a1b8-d4db8854b0c9',
+        data_product_name: 'Demo Games Website - User Journey',
+        data_product_domain: 'Customer Analytics'
+    });
+
+    const context = Array.isArray(login.context)
+        ? [...login.context, eventSpecificationContext]
+        : [eventSpecificationContext];
+
+    const modifiedLogin = {
+        ...login,
+        context,
+    };
+
+    trackLoginSteps<Record<string, unknown> | EventSpecification>(modifiedLogin, trackers);
+}
 
 

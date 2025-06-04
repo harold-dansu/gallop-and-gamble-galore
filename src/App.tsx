@@ -8,18 +8,21 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { newTracker, enableActivityTracking } from '@snowplow/browser-tracker';
-
+import { enableButtonClickTracking, ButtonClickTrackingPlugin } from '@snowplow/browser-plugin-button-click-tracking';
 
 const queryClient = new QueryClient();
 // https://com-snplow-sales-aws-prod1.mini.snplow.net
 // https://collector-sales-aws.snowplow.io
 function initializeSnowplow() {
   newTracker('sp', 'https://collector-sales-aws.snowplow.io', {
+    plugins: [ ButtonClickTrackingPlugin() ],
     appId: 'se-demo-gaming',
     platform: 'web',
     cookieDomain: null,
   });
 
+  enableButtonClickTracking();
+  
   enableActivityTracking({
     minimumVisitLength: 5, 
     heartbeatDelay: 5
