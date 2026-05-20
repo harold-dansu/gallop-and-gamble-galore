@@ -9,20 +9,21 @@ const Header: React.FC = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   return (
-    <header className="bg-racing-green text-white p-4 shadow-md">
+    <header className="bg-bingo-dark text-white p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center">
-          <h1 className="text-2xl md:text-3xl font-bold text-racing-gold">
-            Gallop & Gamble
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-bingo-yellow font-serif tracking-tight">
+            Full House
           </h1>
+          <p className="text-xs text-purple-300 mt-0.5">Play Bingo Online</p>
         </div>
         <div className="flex items-center space-x-4">
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
-              <span className="text-racing-gold">{user?.name}</span>
+              <span className="text-purple-300 text-sm">{user?.name}</span>
               <button
                 onClick={logout}
-                className="bg-racing-gold hover:bg-yellow-600 text-racing-brown font-bold py-2 px-4 rounded transition-all flex items-center gap-2"
+                className="bg-bingo-pink hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm"
               >
                 <LogOut className="h-4 w-4" />
                 Log Out
@@ -31,7 +32,7 @@ const Header: React.FC = () => {
           ) : (
             <button
               onClick={() => setShowLoginModal(true)}
-              className="bg-racing-gold hover:bg-yellow-600 text-racing-brown font-bold py-2 px-4 rounded transition-all flex items-center gap-2"
+              className="bg-bingo-pink hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center gap-2 text-sm"
             >
               <LogIn className="h-4 w-4" />
               Log In
@@ -39,9 +40,9 @@ const Header: React.FC = () => {
           )}
         </div>
       </div>
-      <LoginModal 
-        isOpen={showLoginModal} 
-        onClose={() => setShowLoginModal(false)} 
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
       />
     </header>
   );

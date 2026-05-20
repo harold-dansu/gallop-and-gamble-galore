@@ -63,12 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				racing: {
-					"green": "#0B4619",
-					"tan": "#E6D9B6",
-					"gold": "#D4AF37",
-					"brown": "#3D2314",
-					"light-brown": "#8A6642"
+				bingo: {
+					'purple': '#7C3AED',
+					'dark': '#4C1D95',
+					'pink': '#EC4899',
+					'light': '#F5F3FF',
+					'lavender': '#EDE9FE',
+					'yellow': '#F59E0B',
 				}
 			},
 			borderRadius: {
@@ -78,20 +79,12 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
 				}
 			},
 			animation: {
@@ -99,7 +92,7 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
 			fontFamily: {
-				'serif': ['Playfair Display', 'serif'],
+				'serif': ['Poppins', 'sans-serif'],
 				'sans': ['Inter', 'sans-serif']
 			}
 		}

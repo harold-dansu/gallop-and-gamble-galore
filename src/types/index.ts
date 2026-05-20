@@ -1,36 +1,28 @@
 
-export interface Horse {
+export interface BingoRoom {
   id: number;
   name: string;
-  jockey: string;
-  trainer: string;
-  age: number;
-  weight: number;
-  winOdds: number; // Decimal odds for winning
-  placeOdds: number; // Decimal odds for placing
-  silkColor: string; // Color used for display
+  ticketPrice: number;
+  prizePot: number;
+  playerCount: number;
+  nextGameTime: string;
+  status: 'open' | 'filling' | 'starting';
+  isFeatured: boolean;
 }
 
-export interface Race {
+export type TicketGrid = (number | null)[][];
+
+export interface BingoTicket {
   id: number;
-  name: string;
-  venue: string;
-  distance: string;
-  startTime: string;
-  status: 'upcoming' | 'live' | 'completed';
-  horses: Horse[];
+  grid: TicketGrid;
 }
 
-export type BetType = 'win' | 'place';
-
-export interface Bet {
+export interface TicketPurchase {
   id: number;
-  raceId: number;
-  raceName: string;
-  horseId: number;
-  horseName: string;
-  stake: number;
-  odds: number;
-  betType: BetType;
-  potentialWinnings: number;
+  roomId: number;
+  roomName: string;
+  ticketPrice: number;
+  ticketCount: number;
+  totalCost: number;
+  tickets: BingoTicket[];
 }
