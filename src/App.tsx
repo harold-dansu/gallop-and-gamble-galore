@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 function initializeSnowplow() {
   newTracker('sp', 'https://collector-sales-aws.snowplow.io', {
     plugins: [ ButtonClickTrackingPlugin() ],
-    appId: 'se-demo-gaming',
+    appId: 'hd-demo-gaming',
     platform: 'web',
     cookieDomain: null,
   });
@@ -25,7 +25,7 @@ function initializeSnowplow() {
   
   enableActivityTracking({
     minimumVisitLength: 5, 
-    heartbeatDelay: 5
+    heartbeatDelay: 30
   });
 }
 
